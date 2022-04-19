@@ -1,17 +1,23 @@
-import React, { Component } from 'react'
-import './App.css';
+import React, { Component } from 'react';
 
-import Button from './UI_components/Button';
-import Circle from './UI_components/Button';
+import Button from './components/Button';
+import Circle from './components/Circle';
+import GameOver from './components/GameOver';
 import { circles } from './circles';
-import Gameover from './UI_components/Gameover';
 
-//random
+import startMusic from './assets/sounds/bg.mp3';
+import stopMusic from './assets/sounds/gameover.mp3';
+import click from './assets/sounds/click.wav';
+
+const clickSound = new Audio(click);
+const startSound = new Audio(startMusic);
+const stopSound = new Audio(stopMusic);
+
 const getRndInteger = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export default class App extends Component {
+class App extends Component {
   state = {
     score: 0,
     current: -1,
@@ -19,100 +25,112 @@ export default class App extends Component {
     pace: 1500,
     rounds: 0,
     gameOn: false,
-  }
+  };
 
-  timer = null;
+  timer = undefined;
+
+  clickPlay = () => {
+    if (clickSound.paused) {
+      clickSound.play();
+    } else {
+      clickSound.currentTime = 0;
+    }
+  };
 
   clickHandler = (i) => {
-    if (this.state.current !== i){
+    this.clickPlay();
+    if (this.state.current !== i) {
       this.stopHandler();
       return;
     }
-    console.log(i)
-    this.state({
-      score: this.state.score + 1,
+    this.setState({
+      score: this.state.score + 10,
       rounds: this.state.rounds - 1,
-    })
-  }
+    });
+  };
 
-  nextCircle = () =>{
-    if (this.state.rounds >= 3){
+  nextCircle = () => {
+    if (this.state.rounds >= 1) {
       this.stopHandler();
       return;
     }
 
     let nextActive;
+
     do {
-      this.nextActive = getRndInteger(0,3);
-    }while(nextActive === this.state.current);
+      nextActive = getRndInteger(0, 3);
+    } while (nextActive === this.state.current);
 
     this.setState({
       current: nextActive,
       pace: this.state.pace * 0.95,
       rounds: this.state.rounds + 1,
     });
-    console.log('active circle', this.current)
-    console.log('rounds', this.state.rounds)
+    console.log('rounds', this.state.rounds);
 
     this.timer = setTimeout(this.nextCircle, this.state.pace);
-  }
+  };
+
   startHandler = () => {
+    startSound.play();
+    startSound.loop = true;
     this.nextCircle();
-    this.setState({
-      gameOn: true,
-    })
-  }
+    this.setState({ gameOn: true });
+  };
 
   stopHandler = () => {
-    clearTimeout(this.timer)
-    this.setState({
-      showGameOver: true,
-      gameOn:false
-    })
-  }
+    startSound.pause();
+    stopSound.play();
+    clearTimeout(this.timer);
+    this.setState({ showGameOver: true, gameOn: false });
+  };
 
   closeHandler = () => {
     window.location.reload();
-    this.setState({
-      showGameOver:false,
-      score: 0,
-      current: -1,
-    });
   };
 
   render() {
+    let message = '';
+
+    if (this.state.score <= 50) {
+      message = 'You can do better';
+    } else if (this.state.score >= 51 && this.state.score <= 100) {
+      message = 'Pretty good';
+    } else {
+      message = 'wow!';
+    }
+
     return (
       <div>
-        <h1>Speed game</h1>
-        <p>your Score: {this.state.score}</p>
+        <h1>Speedgame</h1>
+        <p>Your score: {this.state.score}</p>
         <div className="circles">
-          {
-            circles.map((_, i) => {
-              <Circle 
-              key={i} 
-              id={i} 
+          {circles.map((_, i) => (
+            <Circle
+              key={i}
+              id={i}
               click={() => this.clickHandler(i)}
-              active={this.state.current}
-              disable={this.state.gameOn}
-              />
-            })
-          }
+              active={this.state.current === i}
+              disabled={this.state.gameOn}
+            />
+          ))}
         </div>
         <div>
-          
           {!this.state.gameOn && (
-            <Button click={this.startHandler}>Start</Button>
+            <Button click={this.startHandler}>START</Button>
           )}
-
-          {this.state.gameOn && (
-            <Button clck={this.stopHandler}>Stop</Button>
-          )}
-          
+          {this.state.gameOn && <Button click={this.stopHandler}>STOP</Button>}
         </div>
-        
-        {this.state.showGameOver && <Gameover close={this.closeHandler} score={this.state.score}/>}
+        {this.state.showGameOver && (
+          <GameOver
+            click={this.closeHandler}
+            score={this.state.score}
+            message={message}
+          />
+        )}
       </div>
-    )
+    );
   }
 }
 
+export default App;
