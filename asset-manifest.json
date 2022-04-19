@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/speed_drum/static/css/main.beca62ae.css",
+    "main.js": "/speed_drum/static/js/main.f8edbb8a.js",
+    "static/media/bg.mp3": "/speed_drum/static/media/bg.6829a0f4c8d7a5738bbd.mp3",
+    "static/media/gameover.wav": "/speed_drum/static/media/gameover.3894918f7585f9300350.wav",
+    "static/media/snare.mp3": "/speed_drum/static/media/snare.310c0bf618526eb5b23e.mp3",
+    "static/media/meLogo-modified.png": "/speed_drum/static/media/meLogo-modified.d0e0b44cc538f288eed6.png",
+    "index.html": "/speed_drum/index.html",
+    "main.beca62ae.css.map": "/speed_drum/static/css/main.beca62ae.css.map",
+    "main.f8edbb8a.js.map": "/speed_drum/static/js/main.f8edbb8a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.beca62ae.css",
+    "static/js/main.f8edbb8a.js"
+  ]
+}
