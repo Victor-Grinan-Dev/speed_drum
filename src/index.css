@@ -60,7 +60,6 @@ p {
 .active {
   box-shadow: 0 0 25px rgb(0, 0, 0);
   background-color: rgb(7, 164, 231);
-  background-image: url('assets/img/sun.svg');
   background-size: 100%;
 }
 

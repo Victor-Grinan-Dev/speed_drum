@@ -6,12 +6,26 @@ import GameOver from './components/GameOver';
 import { circles } from './circles';
 
 import startMusic from './assets/sounds/bg.mp3';
-import stopMusic from './assets/sounds/gameover.mp3';
-import click from './assets/sounds/click.wav';
+import stopMusic from './assets/sounds/gameover.wav';
 
-const clickSound = new Audio(click);
+import kick from './assets/sounds/kick.mp3';
+import snare from './assets/sounds/snare.mp3';
+import crash from './assets/sounds/crash.mp3';
+import tom1 from './assets/sounds/tom-1.mp3';
+import tom2 from './assets/sounds/tom-2.mp3';
+import tom3 from './assets/sounds/tom-3.mp3';
+import tom4 from './assets/sounds/tom-4.mp3';
+
 const startSound = new Audio(startMusic);
 const stopSound = new Audio(stopMusic);
+
+const kick_sound = new Audio(kick);
+const snare_sound = new Audio(snare);
+const crash_sound = new Audio(crash);
+const tom1_sound = new Audio(tom1);
+const tom2_sound = new Audio(tom2);
+const tom3_sound = new Audio(tom3);
+const tom4_sound = new Audio(tom4);
 
 const getRndInteger = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -30,10 +44,10 @@ class App extends Component {
   timer = undefined;
 
   clickPlay = () => {
-    if (clickSound.paused) {
-      clickSound.play();
+    if (snare_sound.paused) {
+      snare_sound.play();
     } else {
-      clickSound.currentTime = 0;
+      snare_sound.currentTime = 0;
     }
   };
 
